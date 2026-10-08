@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: backend-spring
+  profiles:
+    default: local
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:secondhand}
+    username: ${DB_USER:core_svc}
+    password: ${DB_PASSWORD:}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate # schema chỉ do Flyway tạo, Hibernate chỉ kiểm tra
+    properties:
+      hibernate:
+        "[default_schema]": core
+
+  flyway:
+    schemas: core
+    default-schema: core
+    create-schemas: false # schema đã được tạo sẵn bởi db/init
+    locations: classpath:db/migration
+
+server:
+  port: ${PORT:8081}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
